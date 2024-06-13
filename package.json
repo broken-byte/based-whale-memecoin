@@ -1,0 +1,39 @@
+{
+  "name": "forg-memecoin",
+  "version": "1.0.0",
+  "description": "Forg is the leading memecoin on Base. All your market cap are belong to us 🤖🐸",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/broken-byte/forg-memecoin.git"
+  },
+  "keywords": [
+    "memecoin",
+    "forg",
+    "base",
+    "token",
+    "ERC20"
+  ],
+  "author": "broken-byte",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/broken-byte/forg-memecoin/issues"
+  },
+  "homepage": "https://github.com/broken-byte/forg-memecoin#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.7",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "ethers": "^6.13.0",
+    "hardhat": "^2.22.4",
+    "prettier": "^3.3.1",
+    "prettier-plugin-solidity": "^1.3.1"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "@uniswap/v2-core": "^1.0.1",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0"
+  }
+}
