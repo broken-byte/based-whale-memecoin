@@ -37,7 +37,7 @@ contract BasedWhale is ERC20Capped {
   event Launched(address launcherAddress, uint256 timestamp);
   event TaxRatesSetToZero(uint256 zeroedBuyTaxRate, uint256 zeroedSellTaxRate, uint256 timestamp);
   event LiquidityLocked(
-    address liquidityPool,
+    address liquidityPairAddress,
     uint256 amountOfTokens,
     uint256 amountOfETH,
     uint256 amountOfLiquidityTokensBurned,
@@ -93,23 +93,24 @@ contract BasedWhale is ERC20Capped {
     _mint(address(this), liquidityPoolAllocation);
     _approve(address(this), _uniswapV2Router, liquidityPoolAllocation);
 
-    // Add liquidity to the pool
-    (uint amountToken, uint amountETH, uint amountOfLiquidityTokensBurned) = uniswapV2Router
-      .addLiquidityETH{value: 1 ether}(
+    uint256 liquidityTimeStamp = block.timestamp;
+    // Add liquidity to the pool, burn the tokens and lock the liquidity.
+    (uint amountToken, uint amountETH, ) = uniswapV2Router.addLiquidityETH{value: 1 ether}(
       address(this), // BasedWhale Token Address
       liquidityPoolAllocation, // amountTokenDesired
       0, // amountTokenMin
       0, // amountETHMin
       BURN_ADDRESS, // Recipient of the liquidity tokens
-      block.timestamp // deadline for this liquidity provision
+      liquidityTimeStamp // deadline for this liquidity provision
     );
 
+    IUniswapV2Pair uniswapV2Pair = IUniswapV2Pair(uniswapV2PairAddress);
     emit LiquidityLocked(
       uniswapV2PairAddress,
       amountToken,
       amountETH,
-      amountOfLiquidityTokensBurned,
-      block.timestamp
+      uniswapV2Pair.balanceOf(BURN_ADDRESS),
+      liquidityTimeStamp
     );
 
     tokenState = TokenState.LiquidityLocked;

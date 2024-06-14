@@ -7,7 +7,7 @@ import {
   IUniswapV2Router02,
   IUniswapV2Factory,
 } from "../typechain-types";
-import { LaunchedEvent } from '../typechain-types/contracts/BasedWhale';
+import { LaunchedEvent, LiquidityLockedEvent } from '../typechain-types/contracts/BasedWhale';
 
 describe("BasedWhale", function () {
 
@@ -57,6 +57,19 @@ describe("BasedWhale", function () {
       throw new Error("No Launched events found");
     }
   }
+
+  async function getFirstLiquidityLockedEvent(
+    contract: BasedWhale
+  ): Promise<LiquidityLockedEvent.LogDescription["args"]> {
+    const liquidityLockedFilter = contract.filters.LiquidityLocked(undefined, undefined, undefined, undefined, undefined);
+    const liquidityLockedEvents = await contract.queryFilter(liquidityLockedFilter);
+    if (liquidityLockedEvents.length > 0) {
+      return liquidityLockedEvents[0].args as LiquidityLockedEvent.LogDescription["args"];
+    } else {
+      throw new Error("No LiquidityLocked events found");
+    }
+  }
+
 
   describe("constructor", function () {
     it("should set the deployer as the owner", async function () {
@@ -133,6 +146,9 @@ describe("BasedWhale", function () {
 
       expect(launchedEvent.launcherAddress).to.equal(ownerAddress);
     });
+  });
+
+  describe("initializeUniswapLiquidity", function () {
 
     it("should have set the uniswapV2RouterAddress correctly", async function () {
       const { contract } = await loadFixture(deployBasedWhaleFixture);
@@ -182,6 +198,36 @@ describe("BasedWhale", function () {
       const { reserve0: reserveBasedWhale, reserve1: reserveETH } = await uniswapV2Pair.getReserves();
       expect(reserveBasedWhale).to.equal(liquidityAllocationInWei);
       expect(reserveETH).to.equal(ethers.parseEther("1"));
+    });
+
+    it("should have burned the liquidity tokens for the WETH/BasedWhale pair (to the zero address)", async function () {
+      const { contract } = await loadFixture(deployBasedWhaleFixture);
+      const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
+
+      await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress);
+
+      const uniswapWethTokenPairAddress = await contract.uniswapV2PairAddress();
+      const uniswapV2Pair = await ethers.getContractAt("IUniswapV2Pair", uniswapWethTokenPairAddress);
+      const zeroAddress = "0x0000000000000000000000000000000000000000";
+      const totalSupply = await uniswapV2Pair.totalSupply();
+      expect(await uniswapV2Pair.balanceOf(zeroAddress)).to.equal(totalSupply);
+    });
+
+    it("should have emitted a correct LiquidityLocked event", async function () {
+      const { contract } = await loadFixture(deployBasedWhaleFixture);
+      const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
+
+      await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress);
+
+      const liquidityLockedEvent = await getFirstLiquidityLockedEvent(contract);
+      const uniswapWethTokenPairAddress = await contract.uniswapV2PairAddress();
+      const uniswapV2Pair = await ethers.getContractAt("IUniswapV2Pair", uniswapWethTokenPairAddress);
+      const { reserve0: reserveBasedWhale, reserve1: reserveETH } = await uniswapV2Pair.getReserves();
+      const totalSupplyOfLiquidityTokens = await uniswapV2Pair.totalSupply();
+      expect(liquidityLockedEvent.liquidityPairAddress).to.equal(uniswapWethTokenPairAddress);
+      expect(liquidityLockedEvent.amountOfTokens).to.equal(reserveBasedWhale);
+      expect(liquidityLockedEvent.amountOfETH).to.equal(reserveETH);
+      expect(liquidityLockedEvent.amountOfLiquidityTokensBurned).to.equal(totalSupplyOfLiquidityTokens);
     });
   });
 });
