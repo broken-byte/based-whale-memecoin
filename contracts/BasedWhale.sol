@@ -65,14 +65,14 @@ contract BasedWhale is ERC20Capped, Ownable {
 
   constructor(
     uint cap_,
-    address _ownerMultiSig,
+    address _owner,
     address _marketingMultiSig,
     address _exchangeMultiSig1,
     address _exchangeMultiSig2
   )
     ERC20(TOKEN_NAME, TOKEN_TICKER_SYMBOL)
     ERC20Capped(cap_ * 10 ** uint256(decimals()))
-    Ownable(_ownerMultiSig)
+    Ownable(_owner)
   {
     marketingMultiSig = _marketingMultiSig;
     exchangeMultiSig1 = _exchangeMultiSig1;
