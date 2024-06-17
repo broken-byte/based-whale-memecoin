@@ -2,7 +2,6 @@ import { ethers } from "hardhat";
 import { Signer } from 'ethers';
 import { expect } from 'chai';
 import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
-import { Ownable } from '../typechain-types/@openzeppelin/contracts/access/Ownable';
 import {
   BasedWhale,
   IUniswapV2Router02,
