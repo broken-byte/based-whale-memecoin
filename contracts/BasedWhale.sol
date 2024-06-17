@@ -4,11 +4,12 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
 
-contract BasedWhale is ERC20Capped {
+contract BasedWhale is ERC20Capped, Ownable {
   // States for the contract
   enum TokenState {
     Launched,
@@ -18,7 +19,6 @@ contract BasedWhale is ERC20Capped {
   }
 
   TokenState public tokenState;
-  address public owner;
   address public marketingMultiSig;
   address public exchangeMultiSig1;
   address public exchangeMultiSig2;
@@ -36,6 +36,18 @@ contract BasedWhale is ERC20Capped {
 
   event Launched(address launcherAddress, uint256 timestamp);
   event TaxRatesSetToZero(uint256 zeroedBuyTaxRate, uint256 zeroedSellTaxRate, uint256 timestamp);
+  event BuyTaxed(
+    address buyerAddress,
+    uint256 amountOfTokens,
+    uint256 taxAmount,
+    uint256 timestamp
+  );
+  event SellTaxed(
+    address sellerAddress,
+    uint256 amountOfTokens,
+    uint256 taxAmount,
+    uint256 timestamp
+  );
   event LiquidityLocked(
     address liquidityPairAddress,
     uint256 amountOfTokens,
@@ -45,11 +57,6 @@ contract BasedWhale is ERC20Capped {
   );
   event OwnershipRenounced(address renouncerAddress, address nullAddressOwner, uint256 timestamp);
 
-  modifier onlyOwner() {
-    require(msg.sender == owner, "Only the owner can call this function");
-    _;
-  }
-
   modifier inState(TokenState state) {
     require(tokenState == state, "Function cannot be called in this state");
     _;
@@ -57,12 +64,17 @@ contract BasedWhale is ERC20Capped {
 
   constructor(
     uint cap_,
-    address _marketing,
+    address _ownerMultiSig,
+    address _marketingMultiSig,
     address _exchangeMultiSig1,
     address _exchangeMultiSig2
-  ) payable ERC20(TOKEN_NAME, TOKEN_TICKER_SYMBOL) ERC20Capped(cap_ * 10 ** uint256(decimals())) {
-    owner = msg.sender;
-    marketingMultiSig = _marketing;
+  )
+    payable
+    ERC20(TOKEN_NAME, TOKEN_TICKER_SYMBOL)
+    ERC20Capped(cap_ * 10 ** uint256(decimals()))
+    Ownable(_ownerMultiSig)
+  {
+    marketingMultiSig = _marketingMultiSig;
     exchangeMultiSig1 = _exchangeMultiSig1;
     exchangeMultiSig2 = _exchangeMultiSig2;
 
@@ -122,10 +134,16 @@ contract BasedWhale is ERC20Capped {
     tokenState = TokenState.TaxRatesSetToZero;
   }
 
-  function renounceOwnership() external onlyOwner inState(TokenState.TaxRatesSetToZero) {
-    owner = BURN_ADDRESS;
-    emit OwnershipRenounced(msg.sender, owner, block.timestamp);
+  function renounceOwnership()
+    public
+    virtual
+    override
+    onlyOwner
+    inState(TokenState.TaxRatesSetToZero)
+  {
+    emit OwnershipRenounced(msg.sender, owner(), block.timestamp);
     tokenState = TokenState.OwnershipRenounced;
+    super.renounceOwnership();
   }
 
   // To receive ETH from uniswapV2Router when swapping
@@ -142,10 +160,12 @@ contract BasedWhale is ERC20Capped {
     uint256 taxAmount = 0;
     if (to == uniswapV2PairAddress) {
       // Selling tokens
-      taxAmount = (value * sellTaxRate) / 100;
+      taxAmount = (value * sellTaxRate) / 1000;
+      emit SellTaxed(from, value, taxAmount, block.timestamp);
     } else if (from == uniswapV2PairAddress) {
       // Buying tokens
-      taxAmount = (value * buyTaxRate) / 100;
+      taxAmount = (value * buyTaxRate) / 1000;
+      emit BuyTaxed(to, value, taxAmount, block.timestamp);
     }
 
     if (taxAmount > 0) {

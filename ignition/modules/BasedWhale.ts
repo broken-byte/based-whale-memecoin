@@ -5,6 +5,9 @@ const ONE_GWEI: bigint = 1_000_000_000n;
 
 const BasedWhaleModule = buildModule("BasedWhaleModule", (m) => {
   const oneBillionCappedSupply = BigInt(1_000_000_000);
+
+  // Temporary, will replace with actual addresses
+  const ownerAddress = m.getAccount(0);
   const marketingMultiSigAddress = "";
   const exchangeMultiSigAddress1 = "";
   const exchangeMultiSigAddress2 = "";
@@ -13,7 +16,8 @@ const BasedWhaleModule = buildModule("BasedWhaleModule", (m) => {
     "BasedWhale",
     [
       oneBillionCappedSupply, // cap
-      marketingMultiSigAddress, // marketing
+      ownerAddress, // ownerMultiSig
+      marketingMultiSigAddress, // marketingMultiSig
       exchangeMultiSigAddress1, // exchangeMultiSig1
       exchangeMultiSigAddress2, // exchangeMultiSig2
     ],
