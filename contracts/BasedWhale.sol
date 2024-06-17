@@ -12,6 +12,7 @@ import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
 contract BasedWhale is ERC20Capped, Ownable {
   // States for the contract
   enum TokenState {
+    Default,
     Launched,
     LiquidityLocked,
     TaxRatesSetToZero,
@@ -131,6 +132,9 @@ contract BasedWhale is ERC20Capped, Ownable {
   function setTaxRatesToZero() external onlyOwner inState(TokenState.LiquidityLocked) {
     buyTaxRate = 0;
     sellTaxRate = 0;
+
+    emit TaxRatesSetToZero(buyTaxRate, sellTaxRate, block.timestamp);
+
     tokenState = TokenState.TaxRatesSetToZero;
   }
 
@@ -151,8 +155,8 @@ contract BasedWhale is ERC20Capped, Ownable {
 
   // Override the _beforeTokenTransfer function to add a temporary tax on buys and sells.
   function _update(address from, address to, uint256 value) internal override {
-    // No liquidity pool, no taxes.
-    if (tokenState != TokenState.LiquidityLocked) {
+    // No liquidity pool/no tax rates == no taxes.
+    if (tokenState != TokenState.LiquidityLocked || tokenState == TokenState.TaxRatesSetToZero) {
       super._update(from, to, value);
       return;
     }
