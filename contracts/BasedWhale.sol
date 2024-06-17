@@ -70,7 +70,6 @@ contract BasedWhale is ERC20Capped, Ownable {
     address _exchangeMultiSig1,
     address _exchangeMultiSig2
   )
-    payable
     ERC20(TOKEN_NAME, TOKEN_TICKER_SYMBOL)
     ERC20Capped(cap_ * 10 ** uint256(decimals()))
     Ownable(_ownerMultiSig)
@@ -94,7 +93,7 @@ contract BasedWhale is ERC20Capped, Ownable {
 
   function initializeUniswapLiquidity(
     address _uniswapV2Router
-  ) external onlyOwner inState(TokenState.Launched) {
+  ) external payable onlyOwner inState(TokenState.Launched) {
     uniswapV2Router = IUniswapV2Router02(_uniswapV2Router);
     uniswapV2PairAddress = IUniswapV2Factory(uniswapV2Router.factory()).createPair(
       address(this),
@@ -108,7 +107,7 @@ contract BasedWhale is ERC20Capped, Ownable {
 
     uint256 liquidityTimeStamp = block.timestamp;
     // Add liquidity to the pool, burn the tokens and lock the liquidity.
-    (uint amountToken, uint amountETH, ) = uniswapV2Router.addLiquidityETH{value: 1 ether}(
+    (uint amountToken, uint amountETH, ) = uniswapV2Router.addLiquidityETH{value: msg.value}(
       address(this), // BasedWhale Token Address
       liquidityPoolAllocation, // amountTokenDesired
       0, // amountTokenMin
