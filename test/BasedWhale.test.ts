@@ -330,29 +330,29 @@ describe("BasedWhale", function () {
       expect(marketingAddressBalanceAfter).to.equal(marketingAddressBalanceBefore + expectedTaxAmountFromEvent);
     });
 
-    it("should have triggered the token contract to send the expected amount of tokens to the buyer minus the buy fee", 
+    it("should have triggered the token contract to send the expected amount of tokens to the buyer minus the buy fee",
       async function () {
-      const { accounts, contract } = await loadFixture(deployBasedWhaleFixture);
-      const buyer = await accounts[4].getAddress();
-      const ethBeingUsedForPurchase: bigint = ethers.parseEther("0.25");
-      const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
-      await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress, { value: ethers.parseEther("1") });
-      const uniswapV2Router =
-        await ethers.getContractAt("IUniswapV2Router02", uniswapRouterBaseAddress) as IUniswapV2Router02;
+        const { accounts, contract } = await loadFixture(deployBasedWhaleFixture);
+        const buyer = await accounts[4].getAddress();
+        const ethBeingUsedForPurchase: bigint = ethers.parseEther("0.25");
+        const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
+        await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress, { value: ethers.parseEther("1") });
+        const uniswapV2Router =
+          await ethers.getContractAt("IUniswapV2Router02", uniswapRouterBaseAddress) as IUniswapV2Router02;
 
-      await uniswapV2Router.swapExactETHForTokensSupportingFeeOnTransferTokens(
-        0, // accept any amount of tokens
-        [await uniswapV2Router.WETH(), await contract.getAddress()],
-        buyer,
-        Date.now(),
-        { value: ethBeingUsedForPurchase }
-      );
+        await uniswapV2Router.swapExactETHForTokensSupportingFeeOnTransferTokens(
+          0, // accept any amount of tokens
+          [await uniswapV2Router.WETH(), await contract.getAddress()],
+          buyer,
+          Date.now(),
+          { value: ethBeingUsedForPurchase }
+        );
 
-      const buyTaxEvent = await getFirstBuyTaxEvent(contract);
-      const expectedAmountToReceive = buyTaxEvent.amountOfTokens - buyTaxEvent.taxAmount;
-      const buyerBalance = await contract.balanceOf(buyer);
-      expect(buyerBalance).to.equal(expectedAmountToReceive);
-    });
+        const buyTaxEvent = await getFirstBuyTaxEvent(contract);
+        const expectedAmountToReceive = buyTaxEvent.amountOfTokens - buyTaxEvent.taxAmount;
+        const buyerBalance = await contract.balanceOf(buyer);
+        expect(buyerBalance).to.equal(expectedAmountToReceive);
+      });
 
     it("should have triggered the token contract to send 30% to the marking address on sells", async function () {
       const { accounts, contract } = await loadFixture(deployBasedWhaleFixture);
@@ -368,7 +368,7 @@ describe("BasedWhale", function () {
       await contract.connect(accounts[2]).approve(uniswapRouterBaseAddress, sellAmount);
 
       await uniswapV2Router.connect(accounts[2]).swapExactTokensForETHSupportingFeeOnTransferTokens(
-        sellAmount, 
+        sellAmount,
         0, // accept any amount of tokens
         [await contract.getAddress(), await uniswapV2Router.WETH()],
         exchangeAddress1AsSeller,
@@ -394,7 +394,7 @@ describe("BasedWhale", function () {
       await contract.connect(accounts[2]).approve(uniswapRouterBaseAddress, sellAmount);
 
       await uniswapV2Router.connect(accounts[2]).swapExactTokensForETHSupportingFeeOnTransferTokens(
-        sellAmount, 
+        sellAmount,
         0, // accept any amount of tokens
         [await contract.getAddress(), await uniswapV2Router.WETH()],
         exchangeAddress1AsSeller,
@@ -414,7 +414,7 @@ describe("BasedWhale", function () {
       await contract.setTaxRatesToZero();
       const uniswapV2Router =
         await ethers.getContractAt("IUniswapV2Router02", uniswapRouterBaseAddress) as IUniswapV2Router02;
-      
+
       await uniswapV2Router.swapExactETHForTokensSupportingFeeOnTransferTokens(
         0, // accept any amount of tokens
         [await uniswapV2Router.WETH(), await contract.getAddress()],
@@ -428,7 +428,7 @@ describe("BasedWhale", function () {
       ).to.equal(0);
     });
 
-    it("Should be triggering the token contract to not emit any Sell Tax events after zeroing out the tax rates", async function () { 
+    it("Should be triggering the token contract to not emit any Sell Tax events after zeroing out the tax rates", async function () {
       const { accounts, contract } = await loadFixture(deployBasedWhaleFixture);
       // Exchange multisig 1 is the seller since it has 5% of the total supply allocated to it
       const exchangeAddress1AsSeller = await accounts[2].getAddress();
@@ -441,7 +441,7 @@ describe("BasedWhale", function () {
       await contract.connect(accounts[2]).approve(uniswapRouterBaseAddress, sellAmount);
 
       await uniswapV2Router.connect(accounts[2]).swapExactTokensForETHSupportingFeeOnTransferTokens(
-        sellAmount, 
+        sellAmount,
         0, // accept any amount of tokens
         [await contract.getAddress(), await uniswapV2Router.WETH()],
         exchangeAddress1AsSeller,
@@ -487,7 +487,7 @@ describe("BasedWhale", function () {
       expect(await contract.tokenState()).to.equal(taxRatesZeroedStateEnumeration);
     });
 
-    it ("should have emitted a correct TaxRatesZeroed event", async function () {
+    it("should have emitted a correct TaxRatesZeroed event", async function () {
       // event TaxRatesSetToZero(uint256 zeroedBuyTaxRate, uint256 zeroedSellTaxRate, uint256 timestamp);
       const { contract } = await loadFixture(deployBasedWhaleFixture);
       const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
@@ -503,18 +503,18 @@ describe("BasedWhale", function () {
 
   describe("Renouncing Ownership", function () {
 
-    it("should have renounced ownership successfully after creating and locking liquidity and zeroing out the tax rates", 
+    it("should have renounced ownership successfully after creating and locking liquidity and zeroing out the tax rates",
       async function () {
-      const { contract } = await loadFixture(deployBasedWhaleFixture);
-      const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
-      await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress, { value: ethers.parseEther("1") });
-      await contract.setTaxRatesToZero();
+        const { contract } = await loadFixture(deployBasedWhaleFixture);
+        const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
+        await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress, { value: ethers.parseEther("1") });
+        await contract.setTaxRatesToZero();
 
-      await contract.renounceOwnership();
-      
-      const zeroAddress = "0x0000000000000000000000000000000000000000";
-      expect(await contract.owner()).to.equal(zeroAddress);
-    });
+        await contract.renounceOwnership();
+
+        const zeroAddress = "0x0000000000000000000000000000000000000000";
+        expect(await contract.owner()).to.equal(zeroAddress);
+      });
 
     it("should not allow non-owners to renounce ownership", async function () {
       const { accounts, contract } = await loadFixture(deployBasedWhaleFixture);
@@ -526,42 +526,42 @@ describe("BasedWhale", function () {
       await expect(contract.connect(nonOwner).renounceOwnership()).to.be.reverted;
     });
 
-    it("should have transitioned the token state to OwnershipRenounced successfully after creating and locking liquidity and zeroing out the tax rates", 
+    it("should have transitioned the token state to OwnershipRenounced successfully after creating and locking liquidity and zeroing out the tax rates",
       async function () {
-      const { contract } = await loadFixture(deployBasedWhaleFixture);
-      const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
-      await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress, { value: ethers.parseEther("1") });
-      await contract.setTaxRatesToZero();
+        const { contract } = await loadFixture(deployBasedWhaleFixture);
+        const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
+        await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress, { value: ethers.parseEther("1") });
+        await contract.setTaxRatesToZero();
 
-      await contract.renounceOwnership();
+        await contract.renounceOwnership();
 
-      const ownershipRenouncedStateEnumeration = 4;
-      expect(await contract.tokenState()).to.equal(ownershipRenouncedStateEnumeration);
-    });
+        const ownershipRenouncedStateEnumeration = 4;
+        expect(await contract.tokenState()).to.equal(ownershipRenouncedStateEnumeration);
+      });
   });
 
   describe("Call order of functions via state transitions", function () {
 
-    it("should not allow calling initializeUniswapLiquidity after the token state has transitioned to LiquidityLocked", 
+    it("should not allow calling initializeUniswapLiquidity after the token state has transitioned to LiquidityLocked",
       async function () {
-      const { contract } = await loadFixture(deployBasedWhaleFixture);
-      const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
-      await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress, { value: ethers.parseEther("1") });
+        const { contract } = await loadFixture(deployBasedWhaleFixture);
+        const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
+        await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress, { value: ethers.parseEther("1") });
 
-      await expect(contract.initializeUniswapLiquidity(uniswapRouterBaseAddress))
-        .to.be.revertedWith("Function cannot be called in this state");
-    });
+        await expect(contract.initializeUniswapLiquidity(uniswapRouterBaseAddress))
+          .to.be.revertedWith("Function cannot be called in this state");
+      });
 
-    it("should not allow calling setTaxRatesToZero after the token state has transitioned to TaxRatesZeroed", 
+    it("should not allow calling setTaxRatesToZero after the token state has transitioned to TaxRatesZeroed",
       async function () {
-      const { contract } = await loadFixture(deployBasedWhaleFixture);
-      const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
-      await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress, { value: ethers.parseEther("1") });
-      await contract.setTaxRatesToZero();
+        const { contract } = await loadFixture(deployBasedWhaleFixture);
+        const uniswapRouterBaseAddress: string = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
+        await contract.initializeUniswapLiquidity(uniswapRouterBaseAddress, { value: ethers.parseEther("1") });
+        await contract.setTaxRatesToZero();
 
-      await expect(contract.setTaxRatesToZero())
-        .to.be.revertedWith("Function cannot be called in this state");
-    });
+        await expect(contract.setTaxRatesToZero())
+          .to.be.revertedWith("Function cannot be called in this state");
+      });
 
     it("should not allow calling setTaxRatesToZero before calling initializeUniswapLiquidity", async function () {
       const { contract } = await loadFixture(deployBasedWhaleFixture);
@@ -570,7 +570,7 @@ describe("BasedWhale", function () {
         .to.be.revertedWith("Function cannot be called in this state");
     });
 
-    it("should not allow calling renounceOwnership before calling initializeUniswapLiquidity and setTaxRatesToZero", async function() {
+    it("should not allow calling renounceOwnership before calling initializeUniswapLiquidity and setTaxRatesToZero", async function () {
       const { contract } = await loadFixture(deployBasedWhaleFixture);
 
       await expect(contract.renounceOwnership())
