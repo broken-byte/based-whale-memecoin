@@ -9,7 +9,7 @@ const BasedWhaleModule = buildModule("BasedWhale", (m) => {
   const exchangeMultiSigAddress2 = "0x6ca7304B0871F36Cd3cDF429b928a57a939d86A1";
   const uniswapV2RouterBaseAddress = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
 
-  // // 1. Deploy contract
+  // 1. Deploy contract
   const basedWhale = m.contract(
     "BasedWhale",
     [
