@@ -1,5 +1,9 @@
-// contracts/BasedWhale.sol
-// SPDX-License-Identifier: Apache-2.0
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * WEBSITE: https://basedwhale.vip/
+ * TELEGRAM: https://t.me/BasedWhaleVIP
+ * TWITTER: https://x.com/basedwhalevip
+ */
 
 pragma solidity ^0.8.24;
 
