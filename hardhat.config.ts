@@ -7,7 +7,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       forking: {
         url: `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-        blockNumber: 15680000
+        blockNumber: 15972484
       }
     }
   }
