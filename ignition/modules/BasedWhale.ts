@@ -8,12 +8,12 @@ const BasedWhaleModule = buildModule("BasedWhale", (m) => {
   const exchangeMultiSigAddress1 = "0xeBa74571b3B7703580f908a6A9035EB930C4F37D";
   const exchangeMultiSigAddress2 = "0x6ca7304B0871F36Cd3cDF429b928a57a939d86A1";
   const testMarketingAndExchangeMultiSigAddress = "0xeB7829BA2372572638dB024240B8EF1Ed8C27142";
-  const uniswapV2RouterBaseAddress = "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24";
+  const uniswapV2RouterBaseAddress = "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD";
   const uniswapV2RouterBaseSepoliaAddress = "0x1689E7B1F10000AE47eBfE339a4f69dECd19F602";
   const liquidityETHProvisionMainnet = "1.004";
   const liquidityETHProvisionTestnet = "0.0025";
 
-  const isTestnet: Boolean = true;
+  const isTestnet: Boolean = false;
   const uniswapRouterAddressFinal = isTestnet ? uniswapV2RouterBaseSepoliaAddress : uniswapV2RouterBaseAddress;
   const liquidityETHProvisionFinal = isTestnet ? liquidityETHProvisionTestnet : liquidityETHProvisionMainnet;
 
@@ -33,7 +33,9 @@ const BasedWhaleModule = buildModule("BasedWhale", (m) => {
   m.call(
     basedWhale,
     "mintRemainingSupplyForManualLiquidityProvisioning",
-    []
+    [
+      uniswapRouterAddressFinal
+    ]
   );
 
   return { basedWhale };
