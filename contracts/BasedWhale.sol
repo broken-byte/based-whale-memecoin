@@ -132,6 +132,23 @@ contract BasedWhale is ERC20Capped, Ownable {
     tokenState = TokenState.LiquidityLocked;
   }
 
+  function mintRemainingSupplyForManualLiquidityProvisioning()
+    external
+    onlyOwner
+    inState(TokenState.Launched)
+  {
+    uint256 remainingSupply = cap() - totalSupply(); // 85%
+    _mint(msg.sender, remainingSupply);
+  }
+
+  function moveStateToLiquidityLocked(
+    address _uniswapV2PairAddress
+  ) external onlyOwner inState(TokenState.Launched) {
+    uniswapV2PairAddress = _uniswapV2PairAddress;
+
+    tokenState = TokenState.LiquidityLocked;
+  }
+
   function setTaxRatesToZero() external onlyOwner inState(TokenState.LiquidityLocked) {
     buyTaxRate = 0;
     sellTaxRate = 0;
