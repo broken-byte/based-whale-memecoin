@@ -1,6 +1,6 @@
 # Based Whale
 
-![CI](https://img.shields.io/github/actions/workflow/status/broken-byte/based-whale-memecoin/ci.yml?branch=main)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/broken-byte/based-whale-memecoin/main.yml)
 
 ## Description
 
