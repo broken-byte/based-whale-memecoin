@@ -1,5 +1,7 @@
 # Based Whale
 
+![CI](https://img.shields.io/github/actions/workflow/status/broken-byte/based-whale-memecoin/ci.yml?branch=main)
+
 ## Description
 
 Based whale is the leading memecoin on Base. get based, become a $WHALE 🐋
