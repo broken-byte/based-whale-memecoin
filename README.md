@@ -2,9 +2,15 @@
 
 ## Description
 
-Based whale is the leading memecoin on Base. get based, become the $WHALE 🐋
+Based whale is the leading memecoin on Base. get based, become a $WHALE 🐋
 
 ![A blue whale with a cigar in it's mouth](./images/basedwhale.png)
+
+## Status
+
+- **LAUNCHED**
+- [Uniswap buy link](https://app.uniswap.org/explore/tokens/base/0xe1000b604e193d4f2618cf323602de1aed20f660?chain=base)
+- [Basecan](https://basescan.org/address/0xE1000b604E193D4F2618cF323602De1AeD20F660)
 
 ## Token Design
 
@@ -29,7 +35,7 @@ WHALE is designed to conform to the current meta of memecoins, namely:
   At launch, this liquidity pool with be *locked forever* (i.e., "burn the liquidity") so that no one, not even the founding team, can rug the pool reserves.
 
 - **Contract owner renounciation**
-  Initially, the creators will own the token smart contract as a 3/3 multisig wallet. This allows us to:
+  Initially, the lead engineer will own the token smart contract. this ensures we have a quick, smooth launch process. This allows us to:
   - Zero out the buy/sell tax rates after the first 15 minutes.
   - Provision the liquidity pool and burn the liquidity tokens.
 
@@ -38,9 +44,10 @@ WHALE is designed to conform to the current meta of memecoins, namely:
 ### TLDR; Based Whale will have
 
 - **Capped/max supply**: 1 Billion WHALE
-  - 5% to marketing ([Gnosis multisig wallet](basescan.org/1234))
-  - 5% to an exchange wallet to provision leading exchanges with the coin for listings ([Gnosis multisig wallet](basescan.org/1234))
-  - 5% to another exchange wallet to provision leading exchanges with the coin for listings ([Gnosis multisig wallet](basescan.org/1234))
+  - 5% to marketing ([Gnosis Safe multisig wallet](https://basescan.org/address/0x65D23D5956b2F7E519df94dffA21ff3b078e7FE0))
+  - 5% to an exchange wallet to provision leading exchanges with the coin for listings ([Gnosis Safe multisig wallet](https://basescan.org/address/0xeBa74571b3B7703580f908a6A9035EB930C4F37D))
+  - 5% to another exchange wallet to provision leading exchanges with the coin for listings ([Gnosis Safe multisig wallet](https://basescan.org/address/0x6ca7304B0871F36Cd3cDF429b928a57a939d86A1))
   - 85% to a Uniswap liquidity pool (ETH/Based Whale pair)
-- **Ownership renounced**: Initially owned by a [Gnosis multisig wallet](basescan.org/12345) to provision liquidity pool and zero out buy and sell tax rates after the first 15 minutes (to discourage bot traders)
+- **Ownership renounced**: Initially owned by the [Engineering Deployer](https://basescan.org/address/0x566bd9df983bfeff836a2c3b644553e6a80850fa) to provision liquidity and zero out buy and sell tax rates after the first 15 minutes (to discourage bot traders)
 - **85% supply provisioned liquidity pool at launch**
+  - The pool can be found [here, on Uniswap](https://app.uniswap.org/explore/pools/base/0x20dFf67fa70facB778e424dc5c2233700D90cB56?chain=base)
