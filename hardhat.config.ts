@@ -1,6 +1,5 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "./tasks/LockBasedWhaleLiquidity";
 import "@nomicfoundation/hardhat-verify";
 
 const isPreppedForTestnetAndMainnetDeployments: Boolean = true;
