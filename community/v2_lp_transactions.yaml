@@ -1,0 +1,60 @@
+# These are the transactions from community members to provide liquidity to the Uniswap V2 pool. 
+# The treasury provided token reimbursement to the community members for the ETH they provided for the liquidity pool.
+# This reimbursement was done in the form of WHALE tokens and was given at the rate of WHALE to ETH at the time of the transaction
+# multiplied by 1.10 (in other words, with a 10% bonus).
+Transactions:
+  Transaction1:
+    hash: 0x574ee02343a79e7376ff72c718965e055914e8635cd8299dd7a55e830a9a8b05
+    from: 0x7b9532f81eb583f1ce3036403967b5cfff4df2c3
+    valueETH: 0.146
+    valueUSD: 479.56
+    timestamp: "Jun 23, 2024 5:44 PM"
+    whalePriceUSDAtTimestamp: 0.000117
+    whaleAmountBeforeMultiplier: 4099658.12
+    multiplier: 1.1
+    whaleAmountAfterMultiplier: 4509623.93
+    identity: "WadeyG"
+
+  Transaction2:
+    hash: 0xb095e036951c7b906ec8ab03884e68e0a054851e3e1acf7469db89ab7da55af3
+    from: 0x2d078c2766a7fd2f19c8b1770c20658f1c2625ca
+    valueETH: 0.35
+    valueUSD: 1151.78
+    timestamp: "Jun 23, 2024 9:50 PM"
+    whalePriceUSDAtTimestamp: 0.000119
+    whaleAmountBeforeMultiplier: 9678487.39
+    multiplier: 1.1
+    whaleAmountAfterMultiplier: 10646336.13
+    identity: "Joseph Rahn"
+    
+  Transaction3:
+    hash: 0xa0d51ab7e67d6b5aa929d068b02048922bd5d4d632163c78b63ffba2ec98b7ab
+    from: 0x64c165980ed19273a3aec16a7655bff00b1039a9
+    valueETH: 0.181
+    valueUSD: 595.50
+    timestamp: Jun 24, 2024 7:23 AM
+    whalePriceUSDAtTimestamp: 0.000111
+    whaleAmountBeforeMultiplier: 5365765.77
+    multiplier: 1.1
+    whaleAmountAfterMultiplier: 5902342.35
+    identity: "Dr. Moss"
+
+  Transaction4:
+    hash: 0x848dffd48f394ff4acaaf1c0893b87497bb33512200ca99f3ad401d1f2eecb46
+    from: 0xef0a391e78bd6c0773eba3b6c431bf375bed4404
+    valueETH: 0.1513
+    valueUSD: 498.82
+    timestamp: "Jun 24, 2024 11:36 AM"
+    whalePriceUSDAtTimestamp: 0.000113
+    multiplier: 1.1
+    whaleAmountBeforeMultiplier: 4413451.33
+    whaleAmountAfterMultiplier: 4854796.46
+    identity: "Nathan Paitchel"
+
+TotalTransactions: 4
+TotalWhaleToBeTransferred: 25913098.87 
+TotalETHTransferredAndAvailableForLPProvision: 0.8283
+amountOfWhaleFor1ETHAtCurrentPrice: 24589800
+WhaleNeededForLP: 20361422.34
+totalWhaleToPullOutOfTreasury: 46274521.21
+
