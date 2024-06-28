@@ -13,6 +13,9 @@ Based whale is the leading memecoin on Base. get based, become a $WHALE 🐋
 - **LAUNCHED**
 - [Uniswap buy link](https://app.uniswap.org/explore/tokens/base/0xe1000b604e193d4f2618cf323602de1aed20f660?chain=base)
 - [Basecan](https://basescan.org/address/0xE1000b604E193D4F2618cF323602De1AeD20F660)
+- [Token website](https://basedwhale.vip)
+- [Telegram community](https://t.me/BasedWhaleVIP)
+- [X/Twitter](https://x.com/basedwhalevip)
 
 ## Token Design
 
