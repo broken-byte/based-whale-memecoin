@@ -16,6 +16,7 @@ Based whale is the leading memecoin on Base. get based, become a $WHALE 🐋
 - [Token website](https://basedwhale.vip)
 - [Telegram community](https://t.me/BasedWhaleVIP)
 - [X/Twitter](https://x.com/basedwhalevip)
+- [Team Email](team@basedwhale.vip)
 
 ## Token Design
 

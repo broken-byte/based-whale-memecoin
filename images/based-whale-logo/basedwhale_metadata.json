@@ -1,0 +1,23 @@
+{
+  "name": "BasedWhale",
+  "description": "A crypto whale that is based, and has a lot of money. He is blue and is smoking a fat cigar. He is a true baller.",
+  "image": "ipfs://bafybeiebu4m3wgt2so5hedawlogcknaoaxav63wx3iney3ut7xls6ar7au",
+  "creator_eth_address": "0x566bD9Df983BfEFf836A2C3b644553e6A80850Fa",
+  "project": "Based Whale memecoin",
+  "website": "https://basedwhale.vip",
+  "token_contract_eth_address": "0xE1000b604E193D4F2618cF323602De1AeD20F660",
+  "attributes": [
+    {
+      "trait_type": "Image",
+      "value": "png"
+    },
+    {
+      "trait_type": "Year",
+      "value": 2024
+    },
+    {
+      "trait_type": "Category",
+      "value": "Memecoin"
+    }
+  ]
+}
