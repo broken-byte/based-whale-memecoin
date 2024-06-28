@@ -6,7 +6,7 @@
 
 Based whale is the leading memecoin on Base. get based, become a $WHALE 🐋
 
-![A blue whale with a cigar in it's mouth](./images/basedwhale.png)
+![A blue whale with a cigar in it's mouth](./images/based-whale-logo/basedwhale.png)
 
 ## Status
 
